@@ -147,7 +147,7 @@ public class ApiTests {
     public void deleteSweatbandProduct(){
         String endpoint = "http://localhost/api_testing/product/delete.php";
         Product product = new Product(
-                3
+                1002
         );
         var response = given().body(product).when().delete(endpoint).then();
         response.log().body();
@@ -192,7 +192,7 @@ public class ApiTests {
                     body("name", equalTo("Cross-Back Training Tank")).
                     body("description", equalTo("The most awesome phone of 2013!")).
                     body("price", equalTo("299.00")).
-                    body("category_id", equalTo("2")).
+                    body("category_id", equalTo(2)).
                     body("category_name", equalTo("Active Wear - Women"));
     }
 
@@ -215,7 +215,7 @@ public class ApiTests {
                         body("records.price", everyItem(notNullValue())).
                         body("records.category_id", everyItem(notNullValue())).
                         body("records.category_name", everyItem(notNullValue())).
-                        body("records.id[0]", equalTo("1005"));
+                        body("records.id[0]", equalTo(18));
     }
 
     @Test
@@ -238,7 +238,7 @@ public class ApiTests {
                             body("records.price", everyItem(notNullValue())).
                             body("records.category_id", everyItem(notNullValue())).
                             body("records.category_name", everyItem(notNullValue())).
-                            body("records.id[0]", equalTo("1005"));
+                            body("records.id[0]", equalTo(18));
     }
 
     @Test
@@ -279,7 +279,7 @@ public class ApiTests {
                             body("name", equalTo("Multi-Vitamin (90 capsules)")).
                             body("description", equalTo("A daily dose of our Multi-Vitamins fulfills a day’s nutritional needs for over 12 vitamins and minerals.")).
                             body("price", equalTo("10.00")).
-                            body("category_id", equalTo("4")).
+                            body("category_id", equalTo(4)).
                             body("category_name", equalTo("Supplements"));
     }
 }
