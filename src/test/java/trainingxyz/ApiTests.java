@@ -1,6 +1,7 @@
 package trainingxyz;
 
 import models.Product;
+import models.ProductRecord;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -9,16 +10,18 @@ import static org.hamcrest.Matchers.*;
 
 public class ApiTests {
 
+    String baseUrl = "http://localhost/api_testing/";
+
     @Test
     public void getCategories() {
-        String endpoint = "http://localhost/api_testing/category/read.php";
+        String endpoint = baseUrl + "category/read.php";
         var response = given().when().get(endpoint).then();
         response.log().body();
     }
 
     @Test
     public void getProducts() {
-        String endpoint = "http://localhost/api_testing/product/read.php";
+        String endpoint = baseUrl + "product/read.php";
         var response =
                 given().
                         when().
@@ -29,7 +32,7 @@ public class ApiTests {
 
     @Test
     public void getProductOneParam() {
-        String endpoint = "http://localhost/api_testing/product/read_one.php";
+        String endpoint = baseUrl + "product/read_one.php";
         var response =
                 given().
                         queryParam("id", 2).
@@ -41,7 +44,7 @@ public class ApiTests {
 
     @Test
     public void createProduct() {
-        String endpoint = "http://localhost/api_testing/product/create.php";
+        String endpoint = baseUrl + "product/create.php";
         String body = """
                 {
                 "name": "Elena Water Bootle",
@@ -56,7 +59,7 @@ public class ApiTests {
 
     @Test
     public void updateProduct(){
-        String endpoint = "http://localhost/api_testing/product/update.php";
+        String endpoint = baseUrl + "product/update.php";
         String body = """
                 {
                 "id": 1000,
@@ -72,10 +75,10 @@ public class ApiTests {
 
     @Test
     public void deleteProduct(){
-        String endpoint = "http://localhost/api_testing/product/delete.php";
+        String endpoint = baseUrl + "product/delete.php";
         String body = """
                 {
-                "id": 1000
+                "id": 21
                 }
                 """;
         var response = given().body(body).when().delete(endpoint).then();
@@ -84,7 +87,7 @@ public class ApiTests {
 
     @Test
     public void createSerializedProduct(){
-        String endpoint = "http://localhost/api_testing/product/create.php";
+        String endpoint = baseUrl + "product/create.php";
         Product product = new Product(
                 "Elena1 Water Bootle",
                 "Elena1 Blue water bootle. Holds 64 ounces",
@@ -97,8 +100,22 @@ public class ApiTests {
     }
 
     @Test
+    public void createSerializedProductRecord(){
+        String endpoint = baseUrl + "product/create.php";
+        ProductRecord productRecord = new ProductRecord(
+                "Elena1 Water Bootle",
+                "Elena1 Blue water bootle. Holds 64 ounces",
+                12,
+                3
+
+        );
+        var response = given().body(productRecord).when().post(endpoint).then();
+        response.log().body();
+    }
+
+    @Test
     public void createSweatbandProduct(){
-        String endpoint = "http://localhost/api_testing/product/create.php";
+        String endpoint = baseUrl + "product/create.php";
         Product product = new Product(
                 "Sweatband1",
                 "Sweatband1 Description",
@@ -111,9 +128,9 @@ public class ApiTests {
 
     @Test
     public void updateSweatbandProduct(){
-        String endpoint = "http://localhost/api_testing/product/update.php";
+        String endpoint = baseUrl + "product/update.php";
         Product product = new Product(
-                1002,
+                22,
                 "Sweatband",
                 "Sweatband Description",
                 6,
@@ -125,7 +142,7 @@ public class ApiTests {
 
     @Test
     public void getAllProducts() {
-        String endpoint = "http://localhost/api_testing/product/read.php";
+        String endpoint = baseUrl + "product/read.php";
         Product product = new Product();
         var response = given().body(product).when().get(endpoint).then();
         response.log().body();
@@ -133,10 +150,10 @@ public class ApiTests {
 
     @Test
     public void getSweatbandProduct() {
-        String endpoint = "http://localhost/api_testing/product/read_one.php";
+        String endpoint = baseUrl + "product/read_one.php";
         var response =
                 given().
-                        queryParam("id", 3).
+                        queryParam("id",22).
                         when().
                         get(endpoint).
                         then();
@@ -145,9 +162,9 @@ public class ApiTests {
 
     @Test
     public void deleteSweatbandProduct(){
-        String endpoint = "http://localhost/api_testing/product/delete.php";
+        String endpoint = baseUrl + "product/delete.php";
         Product product = new Product(
-                1002
+                22
         );
         var response = given().body(product).when().delete(endpoint).then();
         response.log().body();
@@ -155,7 +172,7 @@ public class ApiTests {
 
     @Test
     public void checkStatusCodeStatusCodeProductOneParam() {
-        String endpoint = "http://localhost/api_testing/product/read_one.php";
+        String endpoint = baseUrl + "product/read_one.php";
 
         given().
                 queryParam("id", 2).
@@ -168,7 +185,7 @@ public class ApiTests {
 
     @Test
     public void getResponseBodyProductOneParam() {
-        String endpoint = "http://localhost/api_testing/product/read_one.php";
+        String endpoint = baseUrl + "product/read_one.php";
 
         given().
                 queryParam("id", 2).
@@ -179,7 +196,7 @@ public class ApiTests {
 
     @Test
     public void checkBodyFieldsStatusCodeProductOneParam() {
-        String endpoint = "http://localhost/api_testing/product/read_one.php";
+        String endpoint = baseUrl + "product/read_one.php";
 
         given().
                 queryParam("id", 2).
@@ -198,7 +215,7 @@ public class ApiTests {
 
     @Test
     public void getComplexResponseBodyProduct() {
-        String endpoint = "http://localhost/api_testing/product/read.php";
+        String endpoint = baseUrl + "product/read.php";
 
         given().
         when().
@@ -220,7 +237,7 @@ public class ApiTests {
 
     @Test
     public void checkResponseHeaderProduct() {
-        String endpoint = "http://localhost/api_testing/product/read.php";
+        String endpoint = baseUrl + "product/read.php";
 
         given().
                 when().
@@ -243,7 +260,7 @@ public class ApiTests {
 
     @Test
     public void getDeserializedProduct(){
-        String endpoint = "http://localhost/api_testing/product/read_one.php";
+        String endpoint = baseUrl + "product/read_one.php";
         Product expectedProduct = new Product(
                 2,
                 "Cross-Back Training Tank",
@@ -262,8 +279,28 @@ public class ApiTests {
     }
 
     @Test
+    public void getDeserializedProductRecord(){
+        String endpoint = baseUrl + "product/read_one.php";
+        ProductRecord expectedProductRecord = new ProductRecord(
+                2,
+                "Cross-Back Training Tank",
+                "The most awesome phone of 2013!",
+                299.00,
+                2,
+                "Active Wear - Women"
+        );
+        ProductRecord actualProductRecord =
+                given().
+                        queryParam("id", "2").
+                        when().
+                        get(endpoint).
+                        as(ProductRecord.class);
+        assertThat(actualProductRecord, equalTo(expectedProductRecord));
+    }
+
+    @Test
     public void getMultivitaminProduct() {
-        String endpoint = "http://localhost/api_testing/product/read_one.php";
+        String endpoint = baseUrl + "product/read_one.php";
 
         given().
                 queryParam("id", 18).
@@ -281,5 +318,30 @@ public class ApiTests {
                             body("price", equalTo("10.00")).
                             body("category_id", equalTo(4)).
                             body("category_name", equalTo("Supplements"));
+    }
+
+    @Test
+    public void getMultivitaminProductRecord() {
+        String endpoint = baseUrl + "product/read_one.php";
+
+        var response =
+                given().
+                    queryParam("id", 18).
+                when().
+                    get(endpoint);
+
+        response.then().assertThat().statusCode(200);
+        response.then().assertThat().header("Content-Type", equalTo("application/json"));
+
+        ProductRecord actualProductRecord = response.as(ProductRecord.class);
+        ProductRecord expectedProductRecord = new ProductRecord(
+                18,
+                "Multi-Vitamin (90 capsules)",
+                "A daily dose of our Multi-Vitamins fulfills a day’s nutritional needs for over 12 vitamins and minerals.",
+                10.00,
+                4,
+                "Supplements"
+        );
+        assertThat(actualProductRecord, equalTo(expectedProductRecord));
     }
 }
